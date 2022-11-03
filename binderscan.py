@@ -208,7 +208,7 @@ def nmap_top_hundred(the_range,host_ips):
     nm = nmap.PortScanner()
     if the_class == "C":
         #scan entire range
-        scan_data =nm.scan(hosts=the_range, arguments='-Pn --open -T5 -n --exclude {} --top-ports 100'.format(scanner_ip))
+        scan_data =nm.scan(hosts=the_range, arguments='-Pn --open -T5 -sS -n --exclude {} --top-ports 100'.format(scanner_ip))
         for each_ip in scan_data['scan'].keys():
             if each_ip not in tracking[the_range]['responsive'].keys():          
                 tracking[the_range]['uphost_count'] += 1
@@ -222,7 +222,7 @@ def nmap_top_hundred(the_range,host_ips):
     elif the_class == "B":
         #take 10% sample and pingsweep it
         sample1,sample2,sample3 = IPer.get_samples(host_ips,.1)
-        scan_data =nm.scan(hosts=' '.join(sample1), arguments='-Pn --open -T5 -n --exclude {} --top-ports 100'.format(scanner_ip))
+        scan_data =nm.scan(hosts=' '.join(sample1), arguments='-Pn --open -sS -T5 -n --exclude {} --top-ports 100'.format(scanner_ip))
         for each_ip in scan_data['scan'].keys():
             if each_ip not in tracking[the_range]['responsive'].keys():          
                 tracking[the_range]['uphost_count'] += 1
@@ -235,7 +235,7 @@ def nmap_top_hundred(the_range,host_ips):
     elif the_class == "A":
         sample1,sample2,sample3 = IPer.get_samples(host_ips,.005)
 
-        scan_data =nm.scan(hosts=' '.join(sample1), arguments='-Pn --open -T5 -n --exclude {} --top-ports 100'.format(scanner_ip))
+        scan_data =nm.scan(hosts=' '.join(sample1), arguments='-Pn --open -T5 -sS -n --exclude {} --top-ports 100'.format(scanner_ip))
         for each_ip in scan_data['scan'].keys():
             if each_ip not in tracking[the_range]['responsive'].keys():          
                 tracking[the_range]['uphost_count'] += 1
