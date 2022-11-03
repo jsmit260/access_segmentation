@@ -162,8 +162,8 @@ def unicorn_ports(the_range,top_20_ports,host_ips):
         print('[*]UNICORNSCAN on SAMPLE FROM {} COMPLETE[*]'.format(the_range))
     else:
         #Class C
-        #sample1,sample2,sample3 = IPer.get_samples(host_ips,.3)
-        cmd='sudo unicornscan -mTS -r200000 -L 2 {} --ports {} >> unicornscan.out'.format(the_range,','.join(top_20_ports))
+        sample1,sample2,sample3 = IPer.get_samples(host_ips,.5)
+        cmd='sudo unicornscan -mTS -r200000 -L 2 {} --ports {} >> unicornscan.out'.format(' '.join(sample1),','.join(top_20_ports))
         print('[*]RUNNING UNICORNSCAN -- TOP 20 PORTS on {}[*]'.format(the_range))
         out = os.system(cmd)
         print('[*]UNICORNSCAN on SAMPLE FROM {} COMPLETE[*]'.format(the_range))
@@ -208,7 +208,8 @@ def nmap_top_hundred(the_range,host_ips):
     nm = nmap.PortScanner()
     if the_class == "C":
         #scan entire range
-        scan_data =nm.scan(hosts=the_range, arguments='-Pn --open -T5 -sS -n --exclude {} --top-ports 100'.format(scanner_ip))
+        sample1,sample2,sample3 = IPer.get_samples(host_ips,.5)
+        scan_data =nm.scan(hosts=the_range, arguments='-Pn --open -T5 -sS -n --exclude {} --top-ports 100'.format(' '.join(sample1),scanner_ip))
         for each_ip in scan_data['scan'].keys():
             if each_ip not in tracking[the_range]['responsive'].keys():          
                 tracking[the_range]['uphost_count'] += 1
@@ -254,7 +255,7 @@ def unicorn_udp_ports(the_range,top_20_ports,host_ips):
     ips = []
     ports = []
     if the_class == "A":
-        sample1,sample2,sample3 = IPer.get_samples(host_ips,.05)
+        sample1,sample2,sample3 = IPer.get_samples(host_ips,.005)
         cmd='sudo unicornscan -mU -r200000 {} --ports {} >> unicornscan_udp.out'.format(' '.join(sample1),','.join(top_20_ports))
         print('[*]RUNNING UNICORNSCAN -- TOP 100 UDP PORTS AGAINST SAMPLE FROM {}[*]'.format(the_range))
         out = os.system(cmd)
@@ -268,8 +269,8 @@ def unicorn_udp_ports(the_range,top_20_ports,host_ips):
         print('[*]UNICORNSCAN of TOP 100 UDP PORTS COMPLETE[*]'.format(the_range))
     else:
         #Class C
-        #sample1,sample2,sample3 = IPer.get_samples(host_ips,.3)
-        cmd='sudo unicornscan -mU -r200000 {} --ports {} >> unicornscan_udp.out'.format(the_range,','.join(top_20_ports))
+        sample1,sample2,sample3 = IPer.get_samples(host_ips,.5)
+        cmd='sudo unicornscan -mU -r200000 {} --ports {} >> unicornscan_udp.out'.format(' '.join(sample1),','.join(top_20_ports))
         print('[*]RUNNING UNICORNSCAN -- TOP 100 UDP PORTS AGAINST SAMPLE FROM {}[*]'.format(the_range))
         out = os.system(cmd)
         print('[*]UNICORNSCAN of TOP 100 UDP PORTS COMPLETE[*]'.format(the_range))
